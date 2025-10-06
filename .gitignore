@@ -1,0 +1,5 @@
+env/
+.envv
+__pycache__/
+
+POSTGRES_PASSWORD=fw7WHDxWig2YzSdESwP2
