@@ -7,3 +7,7 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
 
 # Load environment variables from a .env file
 load_dotenv()
+
+# Database setup
+engine = create_engine(f"postgresql://postgres:{os.getenv('POSTGRES_PASSWORD')}@db.bttijgbrforwaxpboawf.supabase.co:5432/postgres") #"password"
+SessionLocal = sessionmaker(bind=engine)
