@@ -36,3 +36,19 @@ def get_session():
         yield db
     finally:
         db.close()
+
+if __name__ == "__main__":
+    init_db()
+    with SessionLocal() as session:
+        
+        user_new = User(name="Andy")
+        session.add(user_new)
+        session.commit()
+
+        users = session.query(User).all()
+        for user in users:
+            print("--")
+            print(type(user))
+            print(user)
+            print(user.name)
+            print("--")
