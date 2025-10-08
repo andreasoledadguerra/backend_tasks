@@ -22,3 +22,17 @@ class User(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(50))
+
+
+# DB initialization
+def init_db() -> None:
+    Base.metadata.create_all(engine)
+
+
+# Dependency to get DB session
+def get_session():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
