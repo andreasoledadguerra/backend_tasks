@@ -41,10 +41,12 @@ if __name__ == "__main__":
     init_db()
     with SessionLocal() as session:
         
+        # Create user
         user_new = User(name="Andy")
         session.add(user_new)
         session.commit()
 
+        # Read users
         users = session.query(User).all()
         for user in users:
             print("--")
