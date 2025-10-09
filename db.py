@@ -1,6 +1,6 @@
 import os
-from sqlalchemy import create_engine, Integer, String
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 from models import Base
 
 # Database setup
@@ -11,3 +11,11 @@ SessionLocal = sessionmaker(bind=engine)
 #DB initialization
 def init_db() -> None:
     Base.metadata.create_all(engine)
+
+# Dependency to get DB session
+def get_session():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
