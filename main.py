@@ -19,8 +19,12 @@ from pydantic import BaseModel
 app = FastAPI()
 
 
+class UserCreate(BaseModel):
+    name: str
+
+
 # Definir el modelo de datos para crear un usuario (GET)
-@app.get("/create_user")
+@app.post("/create_user")
 def create_user(name: str):
     return {"message": f"User {name} created successfully"}
 
