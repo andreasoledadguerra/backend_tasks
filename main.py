@@ -22,6 +22,12 @@ app = FastAPI()
 class UserCreate(BaseModel):
     name: str
 
+class UserRead(BaseModel):
+    id: int
+    name: str
+
+
+
 
 # Definir el modelo de datos para crear un usuario (GET)
 @app.post("/create_user")
