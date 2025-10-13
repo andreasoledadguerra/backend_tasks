@@ -23,13 +23,16 @@ class User(BaseModel):
     name: Mapped[str] = mapped_column(String(50))
 
 
-# Definir el modelo de datos para un usuario (GET)
+# Definir el modelo de datos para crear un usuario (GET)
 @app.get("/create_user")
 def create_user(name: str):
     return {"message": f"User {name} created successfully"}
 
+# Definir el modelo de datos para borrar un usuario (DELETE)
+@app.delete("/delete_user")
+def delete_user(user_id: int):
+    return {"message": f"User with id {user_id} deleted successfully"}
 
-#@app.get("/delete_user")
-
+# Definir el modelo de datos para obtener todos los usuarios (GET)
 #@app.get("/get_users")
 
