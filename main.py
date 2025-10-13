@@ -10,17 +10,13 @@
 import uvicorn
 import requests
 
+from sqlalchemy import create_engine, Integer, String
+from sqlalchemy.orm import declarative_base, Mapped, mapped_column, sessionmaker
 from fastapi import FastAPI
 from pydantic import BaseModel
 
 # Crear la instancia de FastAPI
 app = FastAPI()
-
-class User(BaseModel):
-    __tablename__ = "users"
-
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    name: Mapped[str] = mapped_column(String(50))
 
 
 # Definir el modelo de datos para crear un usuario (GET)
@@ -35,4 +31,4 @@ def delete_user(user_id: int):
 
 # Definir el modelo de datos para obtener todos los usuarios (GET)
 #@app.get("/get_users")
-
+#def
