@@ -13,3 +13,8 @@ import requests
 from fastapi import FastAPI
 from pydantic import BaseModel
 
+# Crear la instancia de FastAPI
+app = FastAPI()
+
+
+
