@@ -13,18 +13,21 @@ import requests
 from fastapi import FastAPI
 from pydantic import BaseModel
 
+# Crear la instancia de FastAPI
+app = FastAPI()
 
-class User(Base):
+class User(BaseModel):
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(50))
 
-# Crear la instancia de FastAPI
-app = FastAPI()
 
-# Definir el modelo de datos para un usuario
-#@app.get("/create_user")
+# Definir el modelo de datos para un usuario (GET)
+@app.get("/create_user")
+def create_user(name: str):
+    return {"message": f"User {name} created successfully"}
+
 
 #@app.get("/delete_user")
 
