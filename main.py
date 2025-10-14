@@ -55,3 +55,6 @@ def delete_user(user_id: int, db: Session = Depends(get_session)):
     db.commit()     
     return None
 
+# Inicializar la base de datos
+init_db()
+
