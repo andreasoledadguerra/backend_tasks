@@ -47,8 +47,13 @@ def get_users(db: Session = Depends(get_session)):
     return users
 
 # Definir el modelo de datos para borrar un usuario (DELETE)
-@app.delete("/delete_user")
-def delete_user(user_id: int):
-    return {"message": f"User with id {user_id} deleted successfully"}
+@app.delete("/delete_user_id")
+def delete_user(user_id: int, db: Session = Depends(get_session)):
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    db.delete(user)
+    db.commit()     
+    return None
 
 
