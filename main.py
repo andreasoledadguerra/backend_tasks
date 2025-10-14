@@ -8,7 +8,6 @@
 #"/create_user", "/delete_user", "/get_users"Los endpoints seran:
 
 import uvicorn
-import requests
 
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import  Session
@@ -55,5 +54,4 @@ def delete_user(user_id: int, db: Session = Depends(get_session)):
     db.delete(user)
     db.commit()     
     return None
-
 
