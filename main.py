@@ -10,7 +10,7 @@
 import uvicorn
 import requests
 
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import  Session
 from db import get_session, init_db
 from models import User
