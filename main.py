@@ -40,11 +40,15 @@ def create_user(payload: UserCreate, db: Session = Depends(get_session)):
     db.refresh(new_user)
     return new_user
 
+# Definir el modelo de datos para obtener todos los usuarios (GET)
+@app.get("/get_users", response_model=list[UserRead])
+def get_users(db: Session = Depends(get_session)):
+    users = db.query(User).all()
+    return users
+
 # Definir el modelo de datos para borrar un usuario (DELETE)
 @app.delete("/delete_user")
 def delete_user(user_id: int):
     return {"message": f"User with id {user_id} deleted successfully"}
 
-# Definir el modelo de datos para obtener todos los usuarios (GET)
-#@app.get("/get_users")
-#def
+
