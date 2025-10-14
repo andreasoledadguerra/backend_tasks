@@ -10,15 +10,16 @@
 import uvicorn
 import requests
 
-from sqlalchemy import create_engine, Integer, String
-from sqlalchemy.orm import declarative_base, Mapped, mapped_column, sessionmaker
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
+from sqlalchemy.orm import  sessionmaker
+from db import get_session, init_db
+from models import User
 from pydantic import BaseModel
 
 # Crear la instancia de FastAPI
 app = FastAPI()
 
-
+# Schema para crear y leer usuarios
 class UserCreate(BaseModel):
     name: str
 
@@ -26,13 +27,18 @@ class UserRead(BaseModel):
     id: int
     name: str
 
+    class Config: #what is this?
+        orm_mode = True
 
 
-
-# Definir el modelo de datos para crear un usuario (GET)
-@app.post("/create_user")
-def create_user(name: str):
-    return {"message": f"User {name} created successfully"}
+# Definir el modelo de datos para crear un usuario (POST)
+@app.post("/create_user", response_model=UserRead)
+#def create_user(payload: UserCreate, db: Session = Depends(get_db)):
+#    new_user = User(name=payload.name)
+#    db.add(new_user)
+#    db.commit()
+#    db.refresh(new_user)
+#    return new_user
 
 # Definir el modelo de datos para borrar un usuario (DELETE)
 @app.delete("/delete_user")
