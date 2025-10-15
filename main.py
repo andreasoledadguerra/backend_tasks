@@ -46,6 +46,21 @@ def delete_user(user_id: int, db: Session = Depends(get_session)):
     db.commit()     
     return None
 
-# Inicializar la base de datos
-init_db()
 
+# Inicializar la base de datos y correr el servidor
+if __name__ == "__main__":
+    init_db()
+    with SessionLocal() as session:
+        # Acá creamos un usuario nuevo, y lo guardamos en la DB.
+        user_new = User(name="Andy")
+        session.add(user_new)
+        session.commit()
+
+        # Acá obtenemos todos los usuarios dentro de la DB y los mostramos.
+        users = session.query(User).all()
+        for user in users:
+            print("--")
+            print(type(user))
+            print(user)
+            print(user.name)
+            print("--")
