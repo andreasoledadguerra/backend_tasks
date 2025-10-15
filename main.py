@@ -21,7 +21,7 @@ app = FastAPI()
 # Schema para crear y leer usuarios
 class UserCreate(BaseModel):
     name: str
-
+    
 class UserRead(BaseModel):
     id: int
     name: str
@@ -29,6 +29,11 @@ class UserRead(BaseModel):
     class Config: # convierte el objeto ORM a un objeto Pydantic
         orm_mode = True
 
+# Definir el modelo de datos para obtener todos los usuarios (GET)
+@app.get("/get_users", response_model=list[UserRead])
+def get_users(db: Session = Depends(get_session)):
+    users = db.query(User).all()
+    return users
 
 # Definir el modelo de datos para crear un usuario (POST)
 @app.post("/create_user", response_model=UserRead)
@@ -37,13 +42,8 @@ def create_user(payload: UserCreate, db: Session = Depends(get_session)):
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
-    return new_user
 
-# Definir el modelo de datos para obtener todos los usuarios (GET)
-@app.get("/get_users", response_model=list[UserRead])
-def get_users(db: Session = Depends(get_session)):
-    users = db.query(User).all()
-    return users
+    return new_user
 
 # Definir el modelo de datos para borrar un usuario (DELETE)
 @app.delete("/delete_user_id")
