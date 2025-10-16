@@ -1,6 +1,7 @@
 
-#from fastapi import Depends
-#from sqlalchemy.orm import Session
+from fastapi import Depends
+from sqlalchemy.orm import Session
+from db import get_session
 #
 #@app.post("/create_user", response_model=UserRead, status_code=201)
 #def create_user(payload: UserCreate, db: Session = Depends(get_session)) -> UserRead:
