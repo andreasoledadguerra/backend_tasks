@@ -1,8 +1,7 @@
 import requests
 
 BASE_URL = "http://localhost:PORT"
-
-#
+url = f"{BASE_URL}/create_user"
 #    
 #def create_user(payload: UserCreate, db: Session = Depends(get_session)) -> UserRead:
 #    new_user = User(name=payload.name)
@@ -10,14 +9,15 @@ BASE_URL = "http://localhost:PORT"
 #    db.commit()
 #    db.refresh(new_user)
 #
-#    url = f"{BASE_URL}/create_user"
-#    payload = {"name": name}
-#
 #    # Hacer la petición POST
-#     
 #    response = requests.post(url, json=payload)
-#    return response.json()
-#
+
+#    return UserRead(
+#        data= response.json(),
+#        status_code=response.status_code,
+#        success=response.status_code == 200)
+
+#--------------------EJEMPLO------------------------------------------
 ## Decorador para definir un endpoint GET
 #@app.get("/temperature")
 #def get_temperature_by_dates(lat: float, lon: float, date_i: str, date_f: str) -> WeatherResponse:
