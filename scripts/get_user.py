@@ -4,9 +4,7 @@ from db import get_session
 from requests import UserCreate, UserRead
 from models import User
 
-
-## Definir el modelo de datos para obtener todos los usuarios (GET)
 #@app.get("/get_users", response_model=list[UserRead])
-#def get_users(db: Session = Depends(get_session)):
-#    users = db.query(User).all()
-#    return users
+def get_user(db: Session = Depends(get_session)):
+    users = db.query(User).all()
+    return users
