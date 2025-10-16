@@ -5,6 +5,7 @@ from db import get_session
 from requests import UserCreate, UserRead
 from models import User
 
+app = FastAPI()
 
 
 @app.post("/create_user", response_model=UserRead, status_code=201)
