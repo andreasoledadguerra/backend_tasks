@@ -5,7 +5,7 @@ from models import User
 from pydantic import BaseModel  
 
 
-#@app.delete("/delete_user_id")
+@app.delete("/delete_user_id")
 def delete_user(user_id: int, db: Session = Depends(get_session))-> None:
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
