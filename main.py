@@ -42,7 +42,7 @@ def create_user(payload: UserCreate, db: Session = Depends(get_session)) -> User
 
 # Definir el modelo de datos para borrar un usuario (DELETE)
 @app.delete("/delete_user_id")
-def delete_user(user_id: int, db: Session = Depends(get_session)):
+def delete_user(user_id: int, db: Session = Depends(get_session)) -> None:
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
