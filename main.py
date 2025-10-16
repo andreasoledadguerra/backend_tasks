@@ -22,7 +22,7 @@ class UserRead(BaseModel):
 
 # Definir el modelo de datos para obtener todos los usuarios (GET)
 @app.get("/get_users", response_model=list[UserRead])
-def get_users(db: Session = Depends(get_session)):
+def get_user(db: Session = Depends(get_session)) -> list[UserRead]:
     users = db.query(User).all()
     return users
 
