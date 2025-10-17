@@ -23,6 +23,12 @@ class UserRead(BaseModel):
     class Config: # convierte el objeto ORM a un objeto Pydantic
         orm_mode = True
 
+
+# Inicializar la base de datos al iniciar la aplicación
+@app.get("/")
+def read_root():
+    return {"message": "API funcionando. Ir a /docs para ver endpoints."}
+
 # Definir el modelo de datos para obtener todos los usuarios (GET)
 @app.get("/get_users", response_model=list[UserRead])
 def get_user(db: Session = Depends(get_session)) -> list[UserRead]:
