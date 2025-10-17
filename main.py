@@ -6,6 +6,9 @@ from db import get_session, init_db
 from models import User
 from pydantic import BaseModel
 
+
+#http://127.0.0.1:8000
+
 # Crear la instancia de FastAPI
 app = FastAPI()
 
@@ -49,22 +52,3 @@ def delete_user(user_id: int, db: Session = Depends(get_session)) -> None:
     db.delete(user)
     db.commit()     
     return None
-
-
-# Inicializar la base de datos y correr el servidor
-if __name__ == "__main__":
-    init_db()
-    with SessionLocal() as session:
-        # Acá creamos un usuario nuevo, y lo guardamos en la DB.
-        user_new = User(name="Andy")
-        session.add(user_new)
-        session.commit()
-
-        # Acá obtenemos todos los usuarios dentro de la DB y los mostramos.
-        users = session.query(User).all()
-        for user in users:
-            print("--")
-            print(type(user))
-            print(user)
-            print(user.name)
-            print("--")
