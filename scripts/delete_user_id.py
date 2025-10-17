@@ -4,6 +4,7 @@ from db import get_session
 from models import User
 from pydantic import BaseModel  
 
+app = FastAPI()
 
 @app.delete("/delete_user_id")
 def delete_user(user_id: int, db: Session = Depends(get_session))-> None:
