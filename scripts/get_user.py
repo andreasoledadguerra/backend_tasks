@@ -1,10 +1,8 @@
-from fastapi import FastAPI, Depends
+from fastapi import Depends
 from sqlalchemy.orm import Session
 from db import get_session
 from requests import UserRead
 from models import User
-
-app = FastAPI()
 
 @app.get("/get_users", response_model=list[UserRead])
 def get_user(db: Session = Depends(get_session)) -> list[UserRead]:
