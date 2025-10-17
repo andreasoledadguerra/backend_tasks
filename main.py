@@ -1,56 +1,60 @@
-import os
+import uvicorn
 
-from dotenv import load_dotenv
-
-from sqlalchemy import create_engine, Integer, String
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
-
-# Load environment variables from a .env file
-load_dotenv()
-
-# Database setup
-engine = create_engine(f"postgresql://postgres:{os.getenv('POSTGRES_PASSWORD')}@db.bttijgbrforwaxpboawf.supabase.co:5432/postgres") #"password"
-SessionLocal = sessionmaker(bind=engine)
-
-# ORM Models
-class Base(DeclarativeBase):
-    pass
+from fastapi import FastAPI, Depends, HTTPException
+from sqlalchemy.orm import  Session
+from db import get_session, init_db
+from models import User
+from pydantic import BaseModel
 
 
-class User(Base):
-    __tablename__ = "users"
+#http://127.0.0.1:8000
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    name: Mapped[str] = mapped_column(String(50))
+# Crear la instancia de FastAPI
+app = FastAPI()
+
+# Schema para crear y leer usuarios
+class UserCreate(BaseModel):
+    name: str
+    
+class UserRead(BaseModel):
+    id: int
+    name: str
+
+    class Config: # convierte el objeto ORM a un objeto Pydantic
+        orm_mode = True
 
 
-# DB initialization
-def init_db() -> None:
-    Base.metadata.create_all(engine)
+# Inicializar la base de datos al iniciar la aplicación
+@app.get("/")
+def read_root():
+    return {"message": "API funcionando. Ir a /docs para ver endpoints."}
 
+# Definir el modelo de datos para obtener todos los usuarios (GET)
+@app.get("/get_users", response_model=list[UserRead])
+def get_user(db: Session = Depends(get_session)) -> list[UserRead]:
+    users = db.query(User).all()
+    return users
 
-# Dependency to get DB session
-def get_session():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+# Definir el modelo de datos para crear un usuario (POST)
+@app.post("/create_user", response_model=UserRead, status_code=201)
+def create_user(payload: UserCreate, db: Session = Depends(get_session)) -> UserRead:
+    # Crear la instancia ORM con los datos validados por Pydantic
+    new_user = User(name=payload.name)
 
-if __name__ == "__main__":
-    init_db()
-    with SessionLocal() as session:
-        
-        # Create user
-        user_new = User(name="Andy")
-        session.add(user_new)
-        session.commit()
+    # Persistir en la DB
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
 
-        # Read users
-        users = session.query(User).all()
-        for user in users:
-            print("--")
-            print(type(user))
-            print(user)
-            print(user.name)
-            print("--")
+    # Devolver el objeto ORM; FastAPI lo serializa usando response_model (orm_mode=True)
+    return new_user
+
+# Definir el modelo de datos para borrar un usuario (DELETE)
+@app.delete("/delete_user_id")
+def delete_user(user_id: int, db: Session = Depends(get_session)) -> None:
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    db.delete(user)
+    db.commit()     
+    return None
