@@ -47,3 +47,6 @@ def delete_user(user_id: int, db: Session = Depends(get_session)) -> None:
     db.delete(user)
     db.commit()     
     return None
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="0.0.0.0", port=8000)
