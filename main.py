@@ -5,7 +5,7 @@ from sqlalchemy.orm import  Session
 from db import get_session, init_db
 from models import User
 from pydantic import BaseModel
-
+from request import UserCreate, UserRead
 
 #http://127.0.0.1:8000
 
