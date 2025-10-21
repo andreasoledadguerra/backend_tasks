@@ -34,7 +34,6 @@ def get_user(db: Session = Depends(get_session)) -> list[UserRead]:
     return list[UserRead](users)
 
 
-
 # Definir el modelo de datos para crear un usuario (POST)
 @app.post("/create_user", response_model=UserRead, status_code=201)
 def create_user(payload: UserCreate, db: Session = Depends(get_session)) -> UserRead:
@@ -51,15 +50,20 @@ def create_user(payload: UserCreate, db: Session = Depends(get_session)) -> User
     # Devolver el objeto ORM; FastAPI lo serializa usando response_model (orm_mode=True)
     return UserRead.from_orm(new_user)
 
+
 # Definir el modelo de datos para borrar un usuario (DELETE)
 @app.delete("/delete_user_id")
-def delete_user(user_id: int, db: Session = Depends(get_session)) -> None:
+def delete_user(user_id: int, db: Session = Depends(get_session)) -> list[UserRead]:
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     db.delete(user)
-    db.commit()     
-    return None
+    db.commit()
+
+    response = requests.delete("http://localhost:8000/")
+
+    return list[UserRead]
+
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000)
