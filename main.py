@@ -19,7 +19,6 @@ from request import UserCreate, UserRead
 # Crear la instancia de FastAPI
 app = FastAPI()
 
-
 # Inicializar la base de datos al iniciar la aplicación
 @app.get("/")
 def read_root():
@@ -29,7 +28,12 @@ def read_root():
 @app.get("/get_users", response_model=list[UserRead])
 def get_user(db: Session = Depends(get_session)) -> list[UserRead]:
     users = db.query(User).all()
-    return users
+
+    response = requests.get("http://localhost:8000/")
+
+    return list[UserRead](users)
+
+
 
 # Definir el modelo de datos para crear un usuario (POST)
 @app.post("/create_user", response_model=UserRead, status_code=201)
