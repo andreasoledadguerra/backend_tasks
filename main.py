@@ -7,7 +7,7 @@ load_dotenv()
 
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import  Session
-from db import get_session, init_db
+from db import get_session
 from models import User
 from pydantic import BaseModel
 from request import UserCreate, UserRead
@@ -67,5 +67,6 @@ def delete_user(user_id: int, db: Session = Depends(get_session)) -> list[UserRe
 
 # Ejecutar la aplicación con Uvicorn
 if __name__ == "__main__":
+    
     uvicorn.run("main:app", host="0.0.0.0", port=8000)
 
