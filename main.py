@@ -9,6 +9,9 @@ from models import User
 from pydantic import BaseModel
 from request import UserCreate, UserRead
 
+load_dotenv()
+
+
 #http://127.0.0.1:8000
 
 # Crear la instancia de FastAPI
