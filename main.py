@@ -1,6 +1,7 @@
 import uvicorn
 import requests
 
+from dotenv import load_dotenv() 
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import  Session
 from db import get_session, init_db
