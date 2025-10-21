@@ -24,14 +24,15 @@ app = FastAPI()
 def read_root():
     return {"message": "API funcionando. Ir a /docs para ver endpoints."}
 
+
 # Definir el modelo de datos para obtener todos los usuarios (GET)
-@app.get("/get_users", response_model=list[UserRead])
+@app.get("/get_user", response_model=list[UserRead])
 def get_user(db: Session = Depends(get_session)) -> list[UserRead]:
-    users = db.query(User).all()
+    user = db.query(User).all()
 
     response = requests.get("http://localhost:8000/")
 
-    return list[UserRead](users)
+    return list[UserRead](user)
 
 
 # Definir el modelo de datos para crear un usuario (POST)
@@ -67,3 +68,4 @@ def delete_user(user_id: int, db: Session = Depends(get_session)) -> list[UserRe
 # Ejecutar la aplicación con Uvicorn
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000)
+
