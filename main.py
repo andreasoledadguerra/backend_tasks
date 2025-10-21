@@ -61,7 +61,7 @@ def delete_user(user_id: int, db: Session = Depends(get_session)) -> list[UserRe
     db.delete(user)
     db.commit()
 
-    response = requests.delete("http://localhost:8000/")
+    response = requests.delete("http://localhost:8000/delete_user_id", params={"user_id": user_id})
 
     return list[UserRead]
 
