@@ -46,8 +46,10 @@ def create_user(payload: UserCreate, db: Session = Depends(get_session)) -> User
     db.commit()
     db.refresh(new_user)
 
+    response = requests.post("http://localhost:8000/")
+
     # Devolver el objeto ORM; FastAPI lo serializa usando response_model (orm_mode=True)
-    return new_user
+    return UserRead.from_orm(new_user)
 
 # Definir el modelo de datos para borrar un usuario (DELETE)
 @app.delete("/delete_user_id")
