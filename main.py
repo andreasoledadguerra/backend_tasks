@@ -46,7 +46,7 @@ def create_user(payload: UserCreate, db: Session = Depends(get_session)) -> User
     db.commit()
     db.refresh(new_user)
 
-    response = requests.post("http://localhost:8000/")
+    response = requests.post("http://localhost:8000/create_user", json={"name": payload.name})
 
     # Devolver el objeto ORM; FastAPI lo serializa usando response_model (orm_mode=True)
     return UserRead.from_orm(new_user)
