@@ -7,6 +7,3 @@ class UserCreate(BaseModel):
 class UserRead(BaseModel):
     id: int
     name: str
-
-    class Config: # convierte el objeto ORM a un objeto Pydantic
-        orm_mode = True
