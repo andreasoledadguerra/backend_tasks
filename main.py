@@ -30,8 +30,6 @@ def read_root():
 def get_user(db: Session = Depends(get_session)) -> list[UserRead]:
     user = db.query(User).all()
 
-    response = requests.get("http://localhost:8000/get_user")
-
     return user
 
 
